@@ -1,0 +1,2816 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Micro Reactor Technology | MRT</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#050b12;
+  --bg2:#091521;
+  --panel:rgba(13,27,40,.78);
+  --panel2:#0d1d2a;
+  --cyan:#52e7ff;
+  --cyan2:#18b9df;
+  --green:#72f5b1;
+  --blue:#5b8cff;
+  --white:#f3f9fc;
+  --text:#d9e8ef;
+  --muted:#8197a6;
+  --line:rgba(150,220,255,.14);
+  --glow:rgba(82,231,255,.22);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 0%,rgba(82,231,255,.09),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(114,245,177,.055),transparent 25%),
+    linear-gradient(180deg,#050b12,#07121c 50%,#050b12);
+  font-family:"Cairo",sans-serif;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:45px 45px;
+}
+
+body.en{
+  font-family:"Inter",sans-serif;
+}
+
+*::-webkit-scrollbar{
+  width:8px;
+}
+
+*::-webkit-scrollbar-track{
+  background:#050b12;
+}
+
+*::-webkit-scrollbar-thumb{
+  background:#173344;
+  border-radius:20px;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button{
+  font:inherit;
+}
+
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
+
+/* ================= NAV ================= */
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  background:rgba(5,11,18,.72);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+}
+
+.nav{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+
+.brandMark{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 22px var(--cyan);
+}
+
+.navLinks{
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+
+.navLinks a{
+  color:var(--muted);
+  font-size:.85rem;
+  transition:.25s;
+}
+
+.navLinks a:hover{
+  color:var(--white);
+}
+
+.langBtn{
+  border:1px solid var(--line);
+  color:var(--white);
+  background:rgba(255,255,255,.035);
+  padding:8px 15px;
+  border-radius:100px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.langBtn:hover{
+  border-color:rgba(82,231,255,.45);
+  color:var(--cyan);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:55px;
+  padding-top:120px;
+}
+
+.eyebrow{
+  color:var(--cyan);
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.2em;
+  margin-bottom:20px;
+}
+
+.hero h1{
+  margin:0;
+  color:var(--white);
+  font-size:clamp(3.5rem,7vw,7rem);
+  line-height:.9;
+  letter-spacing:-.065em;
+}
+
+.hero h1 span{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(82,231,255,.7);
+}
+
+.heroDescription{
+  margin-top:30px;
+  max-width:650px;
+  color:var(--muted);
+  font-size:1.08rem;
+  line-height:1.9;
+}
+
+.heroTag{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin-top:28px;
+  padding:10px 15px;
+  border:1px solid var(--line);
+  border-radius:100px;
+  background:rgba(82,231,255,.035);
+  color:#bdeaf4;
+  font-size:.8rem;
+}
+
+.heroTag i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+}
+
+/* ================= HERO CHIP ================= */
+
+.heroVisual{
+  position:relative;
+  min-height:480px;
+  display:grid;
+  place-items:center;
+}
+
+.chip{
+  width:min(570px,100%);
+  aspect-ratio:1.35;
+  position:relative;
+  border-radius:34px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.008)),
+    #0a1823;
+  border:1px solid rgba(82,231,255,.32);
+  box-shadow:
+    0 0 90px rgba(82,231,255,.08),
+    inset 0 0 80px rgba(82,231,255,.035);
+  transform:perspective(1000px) rotateX(5deg) rotateY(-7deg);
+}
+
+.chip::before{
+  content:"";
+  position:absolute;
+  inset:25px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:24px;
+}
+
+.chipText{
+  position:absolute;
+  top:35px;
+  left:40px;
+  color:#58717f;
+  font-family:Inter,sans-serif;
+  font-size:.65rem;
+  letter-spacing:.15em;
+}
+
+.microChannel{
+  position:absolute;
+  height:13px;
+  border-radius:100px;
+  background:rgba(82,231,255,.08);
+  overflow:hidden;
+}
+
+.microChannel::after{
+  content:"";
+  position:absolute;
+  height:100%;
+  width:25%;
+  left:-30%;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  animation:fluidFlow 2s linear infinite;
+}
+
+.channelA{
+  left:8%;
+  top:39%;
+  width:35%;
+}
+
+.channelB{
+  left:8%;
+  top:59%;
+  width:35%;
+}
+
+.channelMix{
+  left:34%;
+  top:49%;
+  width:38%;
+}
+
+.channelOut{
+  left:70%;
+  top:49%;
+  width:22%;
+}
+
+.diffusion{
+  position:absolute;
+  left:42%;
+  top:39%;
+  width:90px;
+  height:70px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,
+    rgba(114,245,177,.65) 0%,
+    rgba(82,231,255,.3) 35%,
+    transparent 72%);
+  filter:blur(1px);
+  animation:pulseMix 2.2s ease-in-out infinite;
+}
+
+.particle{
+  position:absolute;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+  animation:particleMove linear infinite;
+}
+
+.particle.green{
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+}
+
+@keyframes fluidFlow{
+  from{transform:translateX(-150%)}
+  to{transform:translateX(550%)}
+}
+
+@keyframes pulseMix{
+  0%,100%{transform:scale(.8);opacity:.45}
+  50%{transform:scale(1.2);opacity:1}
+}
+
+@keyframes particleMove{
+  from{transform:translateX(-50px);opacity:0}
+  15%{opacity:1}
+  85%{opacity:1}
+  to{transform:translateX(180px);opacity:0}
+}
+
+/* ================= SECTIONS ================= */
+
+section{
+  padding:110px 0;
+  border-top:1px solid rgba(255,255,255,.035);
+}
+
+.sectionHeader{
+  max-width:800px;
+  margin-bottom:50px;
+}
+
+.sectionNumber{
+  color:var(--green);
+  font-family:Inter,sans-serif;
+  font-size:.7rem;
+  font-weight:800;
+  letter-spacing:.18em;
+}
+
+.sectionHeader h2{
+  margin:10px 0 15px;
+  color:var(--white);
+  font-size:clamp(2.2rem,4vw,4rem);
+  line-height:1.05;
+  letter-spacing:-.045em;
+}
+
+.sectionHeader p{
+  color:var(--muted);
+  line-height:1.9;
+  max-width:750px;
+}
+
+/* ================= CARDS ================= */
+
+.grid{
+  display:grid;
+  gap:18px;
+}
+
+.grid3{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.grid2{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.card{
+  position:relative;
+  padding:30px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012)),
+    var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  overflow:hidden;
+  transition:.35s;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:.5;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(82,231,255,.3);
+  box-shadow:0 25px 70px rgba(0,0,0,.22);
+}
+
+.cardIcon{
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  margin-bottom:22px;
+  color:var(--cyan);
+  background:rgba(82,231,255,.07);
+  border:1px solid rgba(82,231,255,.14);
+  font-size:1.2rem;
+}
+
+.card h3{
+  margin:0 0 10px;
+  color:var(--white);
+  font-size:1.15rem;
+}
+
+.card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.9;
+}
+
+/* ================= WHAT IS IT ================= */
+
+.definition{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:22px;
+}
+
+.definitionVisual{
+  min-height:380px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle at center,rgba(82,231,255,.09),transparent 50%),
+    var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+}
+
+.definitionCircle{
+  width:220px;
+  height:220px;
+  border:1px solid rgba(82,231,255,.35);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 70px rgba(82,231,255,.1);
+}
+
+.definitionCircle div{
+  text-align:center;
+}
+
+.definitionCircle strong{
+  display:block;
+  font-family:Inter,sans-serif;
+  font-size:1.4rem;
+  color:var(--cyan);
+}
+
+.definitionCircle small{
+  color:var(--muted);
+}
+
+/* ================= INTERACTIVE CHIP ================= */
+
+.interactiveLayout{
+  display:grid;
+  grid-template-columns:1.3fr .7fr;
+  gap:20px;
+}
+
+.interactiveChip{
+  position:relative;
+  min-height:500px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(82,231,255,.07),transparent 38%),
+    #07131d;
+  overflow:hidden;
+}
+
+.chipBody{
+  position:absolute;
+  inset:65px 55px;
+  border:1px solid rgba(82,231,255,.28);
+  border-radius:30px;
+  background:rgba(82,231,255,.012);
+}
+
+.flowLine{
+  position:absolute;
+  height:14px;
+  border-radius:100px;
+  background:rgba(82,231,255,.08);
+  overflow:hidden;
+}
+
+.flowLine.a{
+  left:5%;
+  top:34%;
+  width:33%;
+}
+
+.flowLine.b{
+  left:5%;
+  top:61%;
+  width:33%;
+}
+
+.flowLine.mix{
+  left:31%;
+  top:47.5%;
+  width:43%;
+}
+
+.flowLine.out{
+  left:70%;
+  top:47.5%;
+  width:25%;
+}
+
+.flowLine::after{
+  content:"";
+  position:absolute;
+  left:-40%;
+  top:0;
+  width:35%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan),
+    transparent
+  );
+  animation:fluidFlow 1.8s linear infinite;
+}
+
+.hotspot{
+  position:absolute;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  background:#06111a;
+  cursor:pointer;
+  z-index:10;
+  box-shadow:0 0 20px rgba(82,231,255,.12);
+  transition:.25s;
+}
+
+.hotspot:hover,
+.hotspot.active{
+  color:#031018;
+  background:var(--cyan);
+  box-shadow:0 0 30px rgba(82,231,255,.45);
+}
+
+.h1{left:18%;top:28%}
+.h2{left:18%;top:55%}
+.h3{left:47%;top:39%}
+.h4{left:80%;top:39%}
+
+.label{
+  position:absolute;
+  color:#5e7b89;
+  font-size:.65rem;
+  font-family:Inter,sans-serif;
+  letter-spacing:.1em;
+}
+
+.labelA{left:5%;top:29%}
+.labelB{left:5%;top:66%}
+.labelMix{left:43%;top:31%}
+.labelOut{right:5%;top:43%}
+
+.infoPanel{
+  padding:30px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:var(--panel);
+  min-height:500px;
+}
+
+.infoPanel .smallTitle{
+  color:var(--cyan);
+  font-size:.7rem;
+  font-family:Inter,sans-serif;
+  letter-spacing:.15em;
+}
+
+.infoPanel h3{
+  color:var(--white);
+  font-size:1.5rem;
+  margin:12px 0;
+}
+
+.infoPanel p{
+  color:var(--muted);
+  line-height:1.95;
+}
+
+.infoPanelLine{
+  height:1px;
+  background:var(--line);
+  margin:25px 0;
+}
+
+/* ================= SIMULATION ================= */
+
+.simulator{
+  display:grid;
+  grid-template-columns:.7fr 1.3fr;
+  gap:20px;
+}
+
+.controls{
+  display:grid;
+  gap:14px;
+}
+
+.control{
+  padding:21px;
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:var(--panel);
+}
+
+.controlHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:12px;
+}
+
+.control label{
+  color:var(--white);
+  font-weight:700;
+  font-size:.9rem;
+}
+
+.controlValue{
+  color:var(--cyan);
+  font-family:Inter,sans-serif;
+  font-size:.82rem;
+}
+
+input[type="range"]{
+  width:100%;
+  accent-color:var(--cyan);
+  cursor:pointer;
+}
+
+.simulationStage{
+  position:relative;
+  min-height:500px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(82,231,255,.07),transparent 50%),
+    #07131d;
+  overflow:hidden;
+}
+
+.simTitle{
+  position:absolute;
+  top:25px;
+  left:30px;
+  color:#57727f;
+  font-family:Inter,sans-serif;
+  font-size:.68rem;
+  letter-spacing:.15em;
+}
+
+.simChannel{
+  position:absolute;
+  left:8%;
+  right:8%;
+  top:45%;
+  height:70px;
+  border-radius:100px;
+  border:1px solid rgba(82,231,255,.25);
+  background:rgba(82,231,255,.035);
+  overflow:hidden;
+}
+
+.streamA,
+.streamB{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:50%;
+  transition:.4s;
+}
+
+.streamA{
+  left:0;
+  background:linear-gradient(
+    90deg,
+    rgba(91,140,255,.42),
+    rgba(91,140,255,.08)
+  );
+}
+
+.streamB{
+  right:0;
+  background:linear-gradient(
+    90deg,
+    rgba(114,245,177,.08),
+    rgba(114,245,177,.42)
+  );
+}
+
+.diffusionZone{
+  position:absolute;
+  left:40%;
+  right:40%;
+  top:0;
+  bottom:0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(91,140,255,.45),
+      rgba(82,231,255,.3),
+      rgba(114,245,177,.45)
+    );
+  filter:blur(7px);
+  transition:.4s;
+}
+
+.simParticles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.simParticle{
+  position:absolute;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  animation:simParticleMove 3s linear infinite;
+}
+
+.simParticle.blue{
+  background:var(--blue);
+  box-shadow:0 0 15px var(--blue);
+}
+
+.simParticle.green{
+  background:var(--green);
+  box-shadow:0 0 15px var(--green);
+}
+
+@keyframes simParticleMove{
+  from{
+    transform:translateX(-80px);
+    opacity:0;
+  }
+  15%{opacity:1}
+  85%{opacity:1}
+  to{
+    transform:translateX(700px);
+    opacity:0;
+  }
+}
+
+.simStats{
+  position:absolute;
+  bottom:24px;
+  left:24px;
+  right:24px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.stat{
+  padding:14px;
+  border-radius:15px;
+  background:rgba(5,11,18,.72);
+  border:1px solid var(--line);
+}
+
+.stat small{
+  display:block;
+  color:var(--muted);
+  margin-bottom:3px;
+  font-size:.7rem;
+}
+
+.stat strong{
+  color:var(--white);
+  font-family:Inter,sans-serif;
+}
+
+/* ================= FLOW EXPLANATION ================= */
+
+.flowSteps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.flowStep{
+  position:relative;
+  padding:25px 20px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:20px;
+}
+
+.flowStep:not(:last-child)::after{
+  content:"→";
+  position:absolute;
+  right:-18px;
+  top:40%;
+  color:var(--cyan);
+  z-index:3;
+  font-family:Inter,sans-serif;
+}
+
+.flowNumber{
+  color:var(--cyan);
+  font-family:Inter,sans-serif;
+  font-size:.7rem;
+  font-weight:800;
+}
+
+.flowStep h3{
+  color:var(--white);
+  margin:10px 0;
+}
+
+.flowStep p{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.8;
+}
+
+/* ================= APPLICATIONS ================= */
+
+.applicationCard{
+  min-height:210px;
+}
+
+.appNumber{
+  font-family:Inter,sans-serif;
+  font-size:.72rem;
+  color:var(--cyan);
+  letter-spacing:.1em;
+}
+
+.applicationCard h3{
+  margin-top:25px;
+}
+
+/* ================= MATERIALS ================= */
+
+.materialVisual{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.materialCard{
+  min-height:240px;
+  position:relative;
+  overflow:hidden;
+}
+
+.materialGlow{
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  right:-60px;
+  top:-70px;
+  background:rgba(82,231,255,.08);
+  filter:blur(20px);
+}
+
+.materialName{
+  position:relative;
+  font-family:Inter,sans-serif;
+  color:var(--white);
+  font-size:1.35rem;
+  font-weight:700;
+}
+
+.materialDescription{
+  position:relative;
+  color:var(--muted);
+  margin-top:15px;
+  line-height:1.8;
+}
+
+/* ================= KEY IDEA ================= */
+
+.keyIdea{
+  position:relative;
+  padding:55px;
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(82,231,255,.13),transparent 45%),
+    var(--panel);
+  border:1px solid rgba(82,231,255,.18);
+  text-align:center;
+  overflow:hidden;
+}
+
+.keyIdea::after{
+  content:"";
+  position:absolute;
+  inset:auto 20% -80px 20%;
+  height:130px;
+  background:rgba(82,231,255,.1);
+  filter:blur(50px);
+}
+
+.keyIdea strong{
+  position:relative;
+  z-index:1;
+  display:block;
+  color:var(--cyan);
+  font-family:Inter,sans-serif;
+  font-size:clamp(1.5rem,3vw,2.5rem);
+}
+
+.keyIdea p{
+  position:relative;
+  z-index:1;
+  max-width:720px;
+  margin:18px auto 0;
+  color:var(--muted);
+  line-height:2;
+}
+
+/* ================= REFERENCES ================= */
+
+.references{
+  display:grid;
+  gap:12px;
+}
+
+.reference{
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--panel);
+}
+
+.reference strong{
+  display:block;
+  color:var(--white);
+  margin-bottom:7px;
+}
+
+.reference span{
+  color:var(--muted);
+  font-size:.86rem;
+  line-height:1.8;
+}
+
+.reference a{
+  color:var(--cyan);
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  padding:55px 0;
+  text-align:center;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+}
+
+.footerTitle{
+  color:var(--white);
+  font-family:Inter,sans-serif;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+/* ================= ANIMATION ================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(25px);
+  transition:
+    opacity .75s ease,
+    transform .75s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:none;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
+
+  .navLinks{
+    display:none;
+  }
+
+  .hero,
+  .definition,
+  .interactiveLayout,
+  .simulator{
+    grid-template-columns:1fr;
+  }
+
+  .grid3{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .flowSteps{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .flowStep:not(:last-child)::after{
+    display:none;
+  }
+
+  .hero{
+    padding-top:125px;
+  }
+
+}
+
+@media(max-width:620px){
+
+  section{
+    padding:80px 0;
+  }
+
+  .grid3,
+  .grid2,
+  .materialVisual,
+  .flowSteps{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:3.6rem;
+  }
+
+  .heroVisual{
+    min-height:350px;
+  }
+
+  .chip{
+    transform:none;
+  }
+
+  .interactiveChip{
+    min-height:380px;
+  }
+
+  .chipBody{
+    inset:55px 20px;
+  }
+
+  .simStats{
+    grid-template-columns:1fr;
+    position:relative;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    margin:260px 20px 20px;
+  }
+
+  .simulationStage{
+    min-height:600px;
+  }
+
+  .simChannel{
+    top:40%;
+  }
+
+  .keyIdea{
+    padding:35px 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="container nav">
+
+  <a class="brand" href="#top">
+    <span class="brandMark"></span>
+    <span>MRT</span>
+  </a>
+
+  <nav class="navLinks">
+    <a href="#concept" data-ar="الفكرة" data-en="Concept">الفكرة</a>
+    <a href="#structure" data-ar="البنية" data-en="Structure">البنية</a>
+    <a href="#mixing" data-ar="الخلط" data-en="Mixing">الخلط</a>
+    <a href="#simulation" data-ar="المحاكاة" data-en="Simulation">المحاكاة</a>
+    <a href="#applications" data-ar="التطبيقات" data-en="Applications">التطبيقات</a>
+    <a href="#references" data-ar="المراجع" data-en="References">المراجع</a>
+  </nav>
+
+  <button class="langBtn" id="languageButton">
+    English
+  </button>
+
+</div>
+
+</header>
+
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+
+<section class="hero container">
+
+<div class="reveal">
+
+  <div class="eyebrow">
+    MICRO REACTOR TECHNOLOGY
+  </div>
+
+  <h1 id="heroTitle">
+    Micro<br>
+    <span>Reactor</span><br>
+    Technology
+  </h1>
+
+  <p
+    class="heroDescription"
+    data-ar="المفاعل الدقيق هو جهاز يمتلك أبعادًا ثابتة دقيقة تكون عادةً أقل بكثير من 1 مم، ويمكن استخدامه لخلط الموائع وللتفاعلات الكيميائية."
+    data-en="A microreactor is a device having precise static features that are generally much less than 1 mm. It can be used to mix fluids and for chemical reactions."
+  >
+    المفاعل الدقيق هو جهاز يمتلك أبعادًا ثابتة دقيقة تكون عادةً أقل بكثير من 1 مم، ويمكن استخدامه لخلط الموائع وللتفاعلات الكيميائية.
+  </p>
+
+  <div class="heroTag">
+    <i></i>
+    <span
+      data-ar="Micro Reactor Technology — MRT"
+      data-en="Micro Reactor Technology — MRT"
+    >
+      Micro Reactor Technology — MRT
+    </span>
+  </div>
+
+</div>
+
+
+<div class="heroVisual reveal">
+
+  <div class="chip">
+
+    <div class="chipText">
+      MICROCHANNEL SYSTEM
+    </div>
+
+    <div class="microChannel channelA"></div>
+    <div class="microChannel channelB"></div>
+    <div class="microChannel channelMix"></div>
+    <div class="microChannel channelOut"></div>
+
+    <div class="diffusion"></div>
+
+    <div class="particle" style="left:17%;top:37%;animation-duration:2.1s"></div>
+    <div class="particle" style="left:23%;top:40%;animation-duration:2.7s"></div>
+    <div class="particle green" style="left:17%;top:57%;animation-duration:2.4s"></div>
+    <div class="particle green" style="left:25%;top:60%;animation-duration:2.9s"></div>
+
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= CONCEPT ================= -->
+
+<section id="concept">
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">01 — CONCEPT</div>
+
+  <h2
+    data-ar="ما هي تقنية المفاعل الدقيق؟"
+    data-en="What is Micro Reactor Technology?"
+  >
+    ما هي تقنية المفاعل الدقيق؟
+  </h2>
+
+  <p
+    data-ar="المفاعل الدقيق هو جهاز ذو أبعاد ثابتة دقيقة تكون عادةً أقل بكثير من 1 مم. يمكن استخدامه لخلط الموائع وللتفاعلات الكيميائية."
+    data-en="A microreactor is a device having precise static features that are generally much less than 1 mm. It can be used to mix fluids and for chemical reactions."
+  >
+    المفاعل الدقيق هو جهاز ذو أبعاد ثابتة دقيقة تكون عادةً أقل بكثير من 1 مم. يمكن استخدامه لخلط الموائع وللتفاعلات الكيميائية.
+  </p>
+
+</div>
+
+
+<div class="definition">
+
+<div class="definitionVisual reveal">
+
+  <div class="definitionCircle">
+
+    <div>
+      <strong>&lt; 1 mm</strong>
+      <small
+        data-ar="أبعاد دقيقة"
+        data-en="Precise features"
+      >
+        أبعاد دقيقة
+      </small>
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card reveal">
+
+  <div class="cardIcon">01</div>
+
+  <h3
+    data-ar="جهاز مصغّر"
+    data-en="Miniaturized device"
+  >
+    جهاز مصغّر
+  </h3>
+
+  <p
+    data-ar="تتميز التقنية بتصغير مسارات الخلط إلى أبعاد دقيقة جدًا."
+    data-en="The technology miniaturizes the mixing paths into very small dimensions."
+  >
+    تتميز التقنية بتصغير مسارات الخلط إلى أبعاد دقيقة جدًا.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">02</div>
+
+  <h3
+    data-ar="خلط الموائع"
+    data-en="Fluid mixing"
+  >
+    خلط الموائع
+  </h3>
+
+  <p
+    data-ar="يمكن استخدام المفاعل الدقيق لخلط الموائع، وهو جانب أساسي من التقنية."
+    data-en="The microreactor can be used to mix fluids, which is a key aspect of the technology."
+  >
+    يمكن استخدام المفاعل الدقيق لخلط الموائع، وهو جانب أساسي من التقنية.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">03</div>
+
+  <h3
+    data-ar="التفاعلات الكيميائية"
+    data-en="Chemical reactions"
+  >
+    التفاعلات الكيميائية
+  </h3>
+
+  <p
+    data-ar="يمكن استخدام الجهاز أيضًا لإجراء التفاعلات الكيميائية داخل المسارات الدقيقة."
+    data-en="The device can also be used for chemical reactions within the small flow pathways."
+  >
+    يمكن استخدام الجهاز أيضًا لإجراء التفاعلات الكيميائية داخل المسارات الدقيقة.
+  </p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= STRUCTURE ================= -->
+
+<section id="structure">
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">02 — STRUCTURE</div>
+
+  <h2
+    data-ar="شاهد التقنية من الداخل"
+    data-en="See the technology from inside"
+  >
+    شاهد التقنية من الداخل
+  </h2>
+
+  <p
+    data-ar="اضغط على النقاط داخل الشريحة لمعرفة وظيفة كل جزء."
+    data-en="Click the points inside the chip to explore each part."
+  >
+    اضغط على النقاط داخل الشريحة لمعرفة وظيفة كل جزء.
+  </p>
+
+</div>
+
+
+<div class="interactiveLayout">
+
+<div class="interactiveChip reveal">
+
+  <div class="chipBody">
+
+    <div class="flowLine a"></div>
+    <div class="flowLine b"></div>
+    <div class="flowLine mix"></div>
+    <div class="flowLine out"></div>
+
+    <div class="label labelA">FLUID A</div>
+    <div class="label labelB">FLUID B</div>
+    <div class="label labelMix">MIXING PATH</div>
+    <div class="label labelOut">OUTLET</div>
+
+    <button class="hotspot h1 active" data-part="a">A</button>
+    <button class="hotspot h2" data-part="b">B</button>
+    <button class="hotspot h3" data-part="mix">M</button>
+    <button class="hotspot h4" data-part="out">O</button>
+
+  </div>
+
+</div>
+
+
+<div class="infoPanel reveal">
+
+  <div class="smallTitle">
+    INTERACTIVE EXPLORATION
+  </div>
+
+  <h3 id="infoTitle">
+    مسار الخلط
+  </h3>
+
+  <p id="infoText">
+    القنوات الدقيقة هي مسارات صغيرة تتحرك داخلها الموائع.
+    تصغير مسارات الخلط يقلل الكميات الداخلة في العمليات الكيميائية
+    أو الكيميائية الحيوية.
+  </p>
+
+  <div class="infoPanelLine"></div>
+
+  <p id="infoDetail">
+    اختر نقطة أخرى على الشريحة لاستكشافها.
+  </p>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= MIXING ================= -->
+
+<section id="mixing">
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">03 — MIXING</div>
+
+  <h2
+    data-ar="لماذا الخلط مهم في هذه التقنية؟"
+    data-en="Why is mixing important?"
+  >
+    لماذا الخلط مهم في هذه التقنية؟
+  </h2>
+
+  <p
+    data-ar="تكمن قوة الجهاز في تصغير مسارات الخلط لتقليل الكميات الداخلة في العمليات الكيميائية أو الكيميائية الحيوية."
+    data-en="The strength of the device is the miniaturization of the mixing paths to reduce the quantities involved in chemical and biochemical processes."
+  >
+    تكمن قوة الجهاز في تصغير مسارات الخلط لتقليل الكميات الداخلة في العمليات الكيميائية أو الكيميائية الحيوية.
+  </p>
+
+</div>
+
+
+<div class="grid grid3">
+
+<div class="card reveal">
+
+  <div class="cardIcon">L</div>
+
+  <h3
+    data-ar="مسارات صغيرة"
+    data-en="Tiny mixing paths"
+  >
+    مسارات صغيرة
+  </h3>
+
+  <p
+    data-ar="يتم تصغير مسارات الخلط إلى أبعاد دقيقة جدًا."
+    data-en="The mixing paths are miniaturized to very small dimensions."
+  >
+    يتم تصغير مسارات الخلط إلى أبعاد دقيقة جدًا.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">D</div>
+
+  <h3
+    data-ar="الانتشار السريع"
+    data-en="Rapid diffusion"
+  >
+    الانتشار السريع
+  </h3>
+
+  <p
+    data-ar="غالبًا ما يتحقق الخلط السريع من خلال الخلط بالانتشار السريع داخل القنوات الصغيرة."
+    data-en="Fast mixing is often achieved through rapid diffusion mixing within the tiny channels."
+  >
+    غالبًا ما يتحقق الخلط السريع من خلال الخلط بالانتشار السريع داخل القنوات الصغيرة.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">Q</div>
+
+  <h3
+    data-ar="كميات صغيرة"
+    data-en="Very small quantities"
+  >
+    كميات صغيرة
+  </h3>
+
+  <p
+    data-ar="من المزايا الإضافية إمكانية استخدام كميات صغيرة جدًا من المواد."
+    data-en="A further advantage is the ability to use very small quantities of material."
+  >
+    من المزايا الإضافية إمكانية استخدام كميات صغيرة جدًا من المواد.
+  </p>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= SIMULATION ================= -->
+
+<section id="simulation">
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">04 — INTERACTIVE SIMULATION</div>
+
+  <h2
+    data-ar="شاهد فكرة الخلط بالانتشار"
+    data-en="See diffusion mixing"
+  >
+    شاهد فكرة الخلط بالانتشار
+  </h2>
+
+  <p
+    data-ar="هذه محاكاة تعليمية بصرية لفكرة الخلط داخل القنوات الصغيرة. لا تحاكي تفاعلًا كيميائيًا محددًا."
+    data-en="This is a visual educational simulation of mixing inside tiny channels. It does not simulate a specific chemical reaction."
+  >
+    هذه محاكاة تعليمية بصرية لفكرة الخلط داخل القنوات الصغيرة. لا تحاكي تفاعلًا كيميائيًا محددًا.
+  </p>
+
+</div>
+
+
+<div class="simulator">
+
+<div class="controls reveal">
+
+<div class="control">
+
+  <div class="controlHead">
+
+    <label
+      data-ar="حجم القناة"
+      data-en="Channel size"
+    >
+      حجم القناة
+    </label>
+
+    <span class="controlValue" id="sizeValue">
+      0.50 mm
+    </span>
+
+  </div>
+
+  <input
+    id="channelSize"
+    type="range"
+    min="0.10"
+    max="1.00"
+    step="0.05"
+    value="0.50"
+  >
+
+</div>
+
+
+<div class="control">
+
+  <div class="controlHead">
+
+    <label
+      data-ar="كمية المادة"
+      data-en="Material quantity"
+    >
+      كمية المادة
+    </label>
+
+    <span class="controlValue" id="quantityValue">
+      صغيرة
+    </span>
+
+  </div>
+
+  <input
+    id="quantity"
+    type="range"
+    min="1"
+    max="3"
+    step="1"
+    value="1"
+  >
+
+</div>
+
+
+<div class="card">
+
+  <h3
+    data-ar="ماذا تلاحظ؟"
+    data-en="What do you notice?"
+  >
+    ماذا تلاحظ؟
+  </h3>
+
+  <p id="simulationExplanation">
+    القنوات الصغيرة تجعل مسار الخلط مصغرًا، وتظهر المحاكاة كيف تتقارب
+    منطقتا السائلين داخل المسار.
+  </p>
+
+</div>
+
+</div>
+
+
+<div class="simulationStage reveal">
+
+  <div class="simTitle">
+    MICROMIXER — VISUAL MODEL
+  </div>
+
+  <div class="simChannel">
+
+    <div class="streamA"></div>
+    <div class="streamB"></div>
+
+    <div class="diffusionZone"></div>
+
+    <div class="simParticles" id="particles"></div>
+
+  </div>
+
+
+  <div class="simStats">
+
+    <div class="stat">
+
+      <small
+        data-ar="أبعاد القناة"
+        data-en="Channel dimension"
+      >
+        أبعاد القناة
+      </small>
+
+      <strong id="statSize">
+        0.50 mm
+      </strong>
+
+    </div>
+
+
+    <div class="stat">
+
+      <small
+        data-ar="الخلط"
+        data-en="Mixing"
+      >
+        الخلط
+      </small>
+
+      <strong
+        data-ar="انتشار سريع"
+        data-en="Rapid diffusion"
+      >
+        انتشار سريع
+      </strong>
+
+    </div>
+
+
+    <div class="stat">
+
+      <small
+        data-ar="المادة"
+        data-en="Material"
+      >
+        المادة
+      </small>
+
+      <strong id="statQuantity">
+        صغيرة
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= FLOW ================= -->
+
+<section>
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">05 — HOW IT WORKS</div>
+
+  <h2
+    data-ar="فكرة التقنية في أربع خطوات"
+    data-en="The technology in four steps"
+  >
+    فكرة التقنية في أربع خطوات
+  </h2>
+
+</div>
+
+
+<div class="flowSteps">
+
+<div class="flowStep reveal">
+
+  <div class="flowNumber">01</div>
+
+  <h3
+    data-ar="موائع"
+    data-en="Fluids"
+  >
+    موائع
+  </h3>
+
+  <p
+    data-ar="تتحرك الموائع داخل مسارات الجهاز."
+    data-en="Fluids move through the device pathways."
+  >
+    تتحرك الموائع داخل مسارات الجهاز.
+  </p>
+
+</div>
+
+
+<div class="flowStep reveal">
+
+  <div class="flowNumber">02</div>
+
+  <h3
+    data-ar="قنوات صغيرة"
+    data-en="Tiny channels"
+  >
+    قنوات صغيرة
+  </h3>
+
+  <p
+    data-ar="تتم عملية الخلط داخل قنوات ذات أبعاد دقيقة جدًا."
+    data-en="Mixing takes place within channels having very small dimensions."
+  >
+    تتم عملية الخلط داخل قنوات ذات أبعاد دقيقة جدًا.
+  </p>
+
+</div>
+
+
+<div class="flowStep reveal">
+
+  <div class="flowNumber">03</div>
+
+  <h3
+    data-ar="انتشار"
+    data-en="Diffusion"
+  >
+    انتشار
+  </h3>
+
+  <p
+    data-ar="يمكن أن يتحقق الخلط السريع من خلال الانتشار السريع داخل القنوات الصغيرة."
+    data-en="Fast mixing can be achieved through rapid diffusion within the tiny channels."
+  >
+    يمكن أن يتحقق الخلط السريع من خلال الانتشار السريع داخل القنوات الصغيرة.
+  </p>
+
+</div>
+
+
+<div class="flowStep reveal">
+
+  <div class="flowNumber">04</div>
+
+  <h3
+    data-ar="عملية كيميائية"
+    data-en="Chemical process"
+  >
+    عملية كيميائية
+  </h3>
+
+  <p
+    data-ar="يمكن استخدام المفاعل الدقيق للعمليات والتفاعلات الكيميائية أو الكيميائية الحيوية."
+    data-en="The microreactor can be used for chemical and biochemical processes and reactions."
+  >
+    يمكن استخدام المفاعل الدقيق للعمليات والتفاعلات الكيميائية أو الكيميائية الحيوية.
+  </p>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= ADVANTAGES ================= -->
+
+<section>
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">06 — ADVANTAGES</div>
+
+  <h2
+    data-ar="ما الذي يميز التقنية؟"
+    data-en="What makes the technology useful?"
+  >
+    ما الذي يميز التقنية؟
+  </h2>
+
+</div>
+
+
+<div class="grid grid2">
+
+<div class="card reveal">
+
+  <div class="cardIcon">01</div>
+
+  <h3
+    data-ar="تقليل الكميات"
+    data-en="Reduced quantities"
+  >
+    تقليل الكميات
+  </h3>
+
+  <p
+    data-ar="تصغير مسارات الخلط يقلل الكميات الداخلة في العمليات الكيميائية أو الكيميائية الحيوية."
+    data-en="Miniaturizing the mixing paths reduces the quantities involved in chemical and biochemical processes."
+  >
+    تصغير مسارات الخلط يقلل الكميات الداخلة في العمليات الكيميائية أو الكيميائية الحيوية.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">02</div>
+
+  <h3
+    data-ar="خلط سريع"
+    data-en="Fast mixing"
+  >
+    خلط سريع
+  </h3>
+
+  <p
+    data-ar="يمكن تحقيق الخلط السريع من خلال الانتشار السريع داخل القنوات الصغيرة."
+    data-en="Fast mixing can be achieved through rapid diffusion mixing within tiny channels."
+  >
+    يمكن تحقيق الخلط السريع من خلال الانتشار السريع داخل القنوات الصغيرة.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">03</div>
+
+  <h3
+    data-ar="مناسبة للخلط السريع"
+    data-en="Useful for rapid mixing"
+  >
+    مناسبة للخلط السريع
+  </h3>
+
+  <p
+    data-ar="تعد المفاعلات الدقيقة أجهزة ذات قيمة عندما يكون الخلط السريع مطلوبًا."
+    data-en="Microreactors are valuable devices where rapid mixing is required."
+  >
+    تعد المفاعلات الدقيقة أجهزة ذات قيمة عندما يكون الخلط السريع مطلوبًا.
+  </p>
+
+</div>
+
+
+<div class="card reveal">
+
+  <div class="cardIcon">04</div>
+
+  <h3
+    data-ar="كميات صغيرة جدًا"
+    data-en="Very small material quantities"
+  >
+    كميات صغيرة جدًا
+  </h3>
+
+  <p
+    data-ar="من المزايا الإضافية القدرة على استخدام كميات صغيرة جدًا من المادة."
+    data-en="An additional advantage is the ability to use very small quantities of material."
+  >
+    من المزايا الإضافية القدرة على استخدام كميات صغيرة جدًا من المادة.
+  </p>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= APPLICATIONS ================= -->
+
+<section id="applications">
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">07 — APPLICATIONS</div>
+
+  <h2
+    data-ar="أين تستخدم التقنية؟"
+    data-en="Where is it used?"
+  >
+    أين تستخدم التقنية؟
+  </h2>
+
+  <p
+    data-ar="المحتوى هنا يقتصر على المجالات المذكورة في المادة الأصلية."
+    data-en="This section is limited to the fields listed in the original material."
+  >
+    المحتوى هنا يقتصر على المجالات المذكورة في المادة الأصلية.
+  </p>
+
+</div>
+
+
+<div class="grid grid3">
+
+<div class="card applicationCard reveal">
+
+  <div class="appNumber">01</div>
+
+  <h3
+    data-ar="الصناعة الكيميائية"
+    data-en="Chemical industry"
+  >
+    الصناعة الكيميائية
+  </h3>
+
+  <p
+    data-ar="تمثل المفاعلات الدقيقة تقنية مهمة في الصناعة الكيميائية."
+    data-en="Microreactors represent an important technology in the chemical industry."
+  >
+    تمثل المفاعلات الدقيقة تقنية مهمة في الصناعة الكيميائية.
+  </p>
+
+</div>
+
+
+<div class="card applicationCard reveal">
+
+  <div class="appNumber">02</div>
+
+  <h3
+    data-ar="الصناعة الدوائية"
+    data-en="Pharmaceutical industry"
+  >
+    الصناعة الدوائية
+  </h3>
+
+  <p
+    data-ar="تستخدم التقنية ضمن مجال الصناعة الدوائية."
+    data-en="The technology is relevant to the pharmaceutical industry."
+  >
+    تستخدم التقنية ضمن مجال الصناعة الدوائية.
+  </p>
+
+</div>
+
+
+<div class="card applicationCard reveal">
+
+  <div class="appNumber">03</div>
+
+  <h3
+    data-ar="الكيمياء التحليلية"
+    data-en="Analytical chemistry"
+  >
+    الكيمياء التحليلية
+  </h3>
+
+  <p
+    data-ar="تمثل التقنية مجالًا مهمًا في الكيمياء التحليلية."
+    data-en="Microreactor technology is relevant to analytical chemistry."
+  >
+    تمثل التقنية مجالًا مهمًا في الكيمياء التحليلية.
+  </p>
+
+</div>
+
+
+<div class="card applicationCard reveal">
+
+  <div class="appNumber">04</div>
+
+  <h3
+    data-ar="التحليل الكيميائي الحيوي"
+    data-en="Biochemical analysis"
+  >
+    التحليل الكيميائي الحيوي
+  </h3>
+
+  <p
+    data-ar="يمكن استخدام التقنية في مجال التحليل الكيميائي الحيوي."
+    data-en="The technology can be used in biochemical analysis."
+  >
+    يمكن استخدام التقنية في مجال التحليل الكيميائي الحيوي.
+  </p>
+
+</div>
+
+
+<div class="card applicationCard reveal">
+
+  <div class="appNumber">05</div>
+
+  <h3
+    data-ar="التخليق عالي الإنتاجية"
+    data-en="High-throughput synthesis"
+  >
+    التخليق عالي الإنتاجية
+  </h3>
+
+  <p
+    data-ar="يعد التخليق عالي الإنتاجية أحد المجالات التي تمثل فيها المفاعلات الدقيقة تقنية مهمة."
+    data-en="High-throughput synthesis is one of the fields where microreactor technology is important."
+  >
+    يعد التخليق عالي الإنتاجية أحد المجالات التي تمثل فيها المفاعلات الدقيقة تقنية مهمة.
+  </p>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= MATERIALS ================= -->
+
+<section>
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">08 — MATERIALS</div>
+
+  <h2
+    data-ar="مم تُصنع أجهزة الخلط الدقيقة؟"
+    data-en="What are micromixers made from?"
+  >
+    مم تُصنع أجهزة الخلط الدقيقة؟
+  </h2>
+
+  <p
+    data-ar="تذكر المادة الأصلية أن أجهزة الخلط الدقيقة تصنع عادةً من مواد شفافة بصريًا."
+    data-en="The original material states that micromixers are typically manufactured from optically transparent materials."
+  >
+    تذكر المادة الأصلية أن أجهزة الخلط الدقيقة تصنع عادةً من مواد شفافة بصريًا.
+  </p>
+
+</div>
+
+
+<div class="materialVisual">
+
+<div class="card materialCard reveal">
+
+  <div class="materialGlow"></div>
+
+  <div class="materialName">
+    Borosilicate Glass
+  </div>
+
+  <div class="materialDescription">
+
+    <span
+      data-ar="زجاج البوروسيليكات — من المواد الشفافة بصريًا المذكورة للمِيكرو ميكسر."
+      data-en="Borosilicate glass — one of the optically transparent materials mentioned for micromixers."
+    >
+      زجاج البوروسيليكات — من المواد الشفافة بصريًا المذكورة للمِيكرو ميكسر.
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="card materialCard reveal">
+
+  <div class="materialGlow"></div>
+
+  <div class="materialName">
+    Quartz
+  </div>
+
+  <div class="materialDescription">
+
+    <span
+      data-ar="الكوارتز — مادة شفافة بصريًا مذكورة ضمن مواد تصنيع أجهزة الخلط الدقيقة."
+      data-en="Quartz — an optically transparent material mentioned for micromixers."
+    >
+      الكوارتز — مادة شفافة بصريًا مذكورة ضمن مواد تصنيع أجهزة الخلط الدقيقة.
+    </span>
+
+  </div>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= CORE IDEA ================= -->
+
+<section>
+
+<div class="container">
+
+<div class="keyIdea reveal">
+
+  <strong
+    data-ar="التصغير → قنوات أصغر → كميات أقل → خلط سريع بالانتشار"
+    data-en="Miniaturization → smaller paths → smaller quantities → rapid diffusion mixing"
+  >
+    التصغير → قنوات أصغر → كميات أقل → خلط سريع بالانتشار
+  </strong>
+
+  <p
+    data-ar="هذه هي الفكرة الأساسية التي يقوم عليها الجزء الذي ندرسه من Micro Reactor Technology."
+    data-en="This is the central idea behind the part of Micro Reactor Technology presented here."
+  >
+    هذه هي الفكرة الأساسية التي يقوم عليها الجزء الذي ندرسه من Micro Reactor Technology.
+  </p>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- ================= REFERENCES ================= -->
+
+<section id="references">
+
+<div class="container">
+
+<div class="sectionHeader reveal">
+
+  <div class="sectionNumber">09 — REFERENCES</div>
+
+  <h2
+    data-ar="المراجع"
+    data-en="References"
+  >
+    المراجع
+  </h2>
+
+  <p
+    data-ar="المراجع التالية تدعم المعلومات الأساسية المستخدمة في الموقع."
+    data-en="The following references support the core information used in this website."
+  >
+    المراجع التالية تدعم المعلومات الأساسية المستخدمة في الموقع.
+  </p>
+
+</div>
+
+
+<div class="references">
+
+<div class="reference reveal">
+
+  <strong>
+    Vapourtec — Microreactor | Micromixer | Flow Reactors
+  </strong>
+
+  <span>
+    المصدر المستخدم لتعريف المفاعل الدقيق، أبعاده، خلط الموائع،
+    المجالات الخمسة، تصغير مسارات الخلط، والخلط بالانتشار السريع.
+    <br><br>
+    <a
+      href="https://www.vapourtec.com/flow-chemistry/microreactor-micromixer/"
+      target="_blank"
+    >
+      Open source ↗
+    </a>
+  </span>
+
+</div>
+
+
+<div class="reference reveal">
+
+  <strong>
+    Review: Fabrication and Applications of Microfluidic Devices
+  </strong>
+
+  <span>
+    مرجع علمي يوضح استخدام الزجاج والكوارتز والمواد المختلفة
+    في الأجهزة ذات القنوات الدقيقة، مع أمثلة على الأجهزة المصغرة.
+    <br><br>
+    <a
+      href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7921936/"
+      target="_blank"
+    >
+      Open scientific reference ↗
+    </a>
+  </span>
+
+</div>
+
+
+<div class="reference reveal">
+
+  <strong>
+    Syrris — Microreactor / Micromixer
+  </strong>
+
+  <span>
+    مثال عملي موثق لميكرو ريأكتور زجاجي يوضح القنوات التي تمر فيها
+    المواد والخلط بالانتشار.
+    <br><br>
+    <a
+      href="https://www.syrris.com/applications/flow-chemistry-applications/"
+      target="_blank"
+    >
+      Open reference ↗
+    </a>
+  </span>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+</main>
+
+
+<footer>
+
+<div class="container">
+
+<div class="footerTitle">
+  Micro Reactor Technology — MRT
+</div>
+
+<span
+  data-ar="موقع تعليمي تفاعلي عن تقنية المفاعل الدقيق"
+  data-en="Interactive educational website about Micro Reactor Technology"
+>
+  موقع تعليمي تفاعلي عن تقنية المفاعل الدقيق
+</span>
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   LANGUAGE SYSTEM
+========================================================= */
+
+const languageButton =
+  document.getElementById("languageButton");
+
+let currentLanguage = "ar";
+
+
+function setLanguage(language){
+
+  currentLanguage = language;
+
+  document.documentElement.lang =
+    language;
+
+  document.body.classList.toggle(
+    "en",
+    language === "en"
+  );
+
+  document.body.dir =
+    language === "ar" ? "rtl" : "ltr";
+
+
+  document.querySelectorAll("[data-ar]").forEach(el=>{
+
+    el.textContent =
+      el.getAttribute(
+        language === "ar"
+          ? "data-ar"
+          : "data-en"
+      );
+
+  });
+
+
+  languageButton.textContent =
+    language === "ar"
+      ? "English"
+      : "العربية";
+
+
+  updateSimulationText();
+
+}
+
+
+languageButton.addEventListener(
+  "click",
+  ()=>{
+
+    setLanguage(
+      currentLanguage === "ar"
+        ? "en"
+        : "ar"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   INTERACTIVE CHIP
+========================================================= */
+
+const hotspotData = {
+
+  a:{
+    titleAr:"المائع A",
+    titleEn:"Fluid A",
+
+    textAr:
+      "يمثل أحد الموائع الداخلة إلى مسار الخلط.",
+
+    textEn:
+      "Represents one of the fluids entering the mixing path.",
+
+    detailAr:
+      "الفكرة الأساسية هي أن الموائع تتحرك داخل المسارات الصغيرة.",
+
+    detailEn:
+      "The key idea is that fluids move through the small pathways."
+  },
+
+  b:{
+    titleAr:"المائع B",
+    titleEn:"Fluid B",
+
+    textAr:
+      "يمثل المائع الآخر الذي يدخل إلى مسار الخلط.",
+
+    textEn:
+      "Represents the other fluid entering the mixing path.",
+
+    detailAr:
+      "عند تصغير مسارات الخلط تصبح الكميات الداخلة في العملية صغيرة.",
+
+    detailEn:
+      "Miniaturizing the mixing paths reduces the quantities involved."
+  },
+
+  mix:{
+    titleAr:"منطقة الخلط",
+    titleEn:"Mixing region",
+
+    textAr:
+      "هنا تظهر الفكرة الأساسية للـMicroreactor: الخلط داخل القنوات الصغيرة، حيث يمكن أن يتحقق الخلط السريع من خلال الانتشار السريع.",
+
+    textEn:
+      "This is the central Microreactor idea: mixing inside tiny channels, where fast mixing can be achieved through rapid diffusion.",
+
+    detailAr:
+      "هذه هي المنطقة التي تشرح سبب أهمية تصغير مسارات الخلط.",
+
+    detailEn:
+      "This region illustrates why miniaturizing the mixing paths matters."
+  },
+
+  out:{
+    titleAr:"المخرج",
+    titleEn:"Outlet",
+
+    textAr:
+      "بعد مرور الموائع داخل مسار الخلط، يخرج المائع من الجهاز.",
+
+    textEn:
+      "After passing through the mixing pathway, the fluid leaves the device.",
+
+    detailAr:
+      "المحاكاة هنا تركز على فكرة الخلط ولا تفترض تفاعلًا كيميائيًا محددًا.",
+
+    detailEn:
+      "This simulation focuses on mixing and does not assume a specific chemical reaction."
+  }
+
+};
+
+
+const hotspots =
+  document.querySelectorAll(".hotspot");
+
+
+const infoTitle =
+  document.getElementById("infoTitle");
+
+const infoText =
+  document.getElementById("infoText");
+
+const infoDetail =
+  document.getElementById("infoDetail");
+
+
+function showHotspot(part){
+
+  const data =
+    hotspotData[part];
+
+  hotspots.forEach(h=>{
+    h.classList.toggle(
+      "active",
+      h.dataset.part === part
+    );
+  });
+
+
+  if(currentLanguage === "ar"){
+
+    infoTitle.textContent =
+      data.titleAr;
+
+    infoText.textContent =
+      data.textAr;
+
+    infoDetail.textContent =
+      data.detailAr;
+
+  }else{
+
+    infoTitle.textContent =
+      data.titleEn;
+
+    infoText.textContent =
+      data.textEn;
+
+    infoDetail.textContent =
+      data.detailEn;
+
+  }
+
+}
+
+
+hotspots.forEach(h=>{
+
+  h.addEventListener(
+    "click",
+    ()=>{
+      showHotspot(
+        h.dataset.part
+      );
+    }
+  );
+
+});
+
+
+/* =========================================================
+   SIMULATION
+========================================================= */
+
+const channelSize =
+  document.getElementById(
+    "channelSize"
+  );
+
+const quantity =
+  document.getElementById(
+    "quantity"
+  );
+
+
+const sizeValue =
+  document.getElementById(
+    "sizeValue"
+  );
+
+const quantityValue =
+  document.getElementById(
+    "quantityValue"
+  );
+
+const statSize =
+  document.getElementById(
+    "statSize"
+  );
+
+const statQuantity =
+  document.getElementById(
+    "statQuantity"
+  );
+
+const simulationExplanation =
+  document.getElementById(
+    "simulationExplanation"
+  );
+
+
+const diffusionZone =
+  document.querySelector(
+    ".diffusionZone"
+  );
+
+
+const streamA =
+  document.querySelector(
+    ".streamA"
+  );
+
+const streamB =
+  document.querySelector(
+    ".streamB"
+  );
+
+
+function updateSimulation(){
+
+  const size =
+    Number(
+      channelSize.value
+    );
+
+  const q =
+    Number(
+      quantity.value
+    );
+
+
+  sizeValue.textContent =
+    size.toFixed(2) + " mm";
+
+  statSize.textContent =
+    size.toFixed(2) + " mm";
+
+
+  let qAr;
+  let qEn;
+
+  if(q === 1){
+
+    qAr = "صغيرة";
+    qEn = "Small";
+
+  }else if(q === 2){
+
+    qAr = "متوسطة";
+    qEn = "Medium";
+
+  }else{
+
+    qAr = "أكبر";
+    qEn = "Larger";
+
+  }
+
+
+  quantityValue.textContent =
+    currentLanguage === "ar"
+      ? qAr
+      : qEn;
+
+  statQuantity.textContent =
+    currentLanguage === "ar"
+      ? qAr
+      : qEn;
+
+
+  /*
+    The visual model deliberately does not calculate
+    reaction rates or invented chemical quantities.
+
+    It only visualizes:
+    - smaller channel dimensions
+    - reduced material quantity
+    - mixing by diffusion
+  */
+
+
+  const normalized =
+    (size - .10) / .90;
+
+
+  const diffusionWidth =
+    18 + normalized * 20;
+
+
+  diffusionZone.style.left =
+    (50 - diffusionWidth/2) + "%";
+
+  diffusionZone.style.right =
+    (50 - diffusionWidth/2) + "%";
+
+
+  /*
+    Quantity changes the visual amount of particles,
+    not a fabricated physical measurement.
+  */
+
+
+  const particleCount =
+    q === 1 ? 12 :
+    q === 2 ? 20 : 30;
+
+
+  createParticles(
+    particleCount
+  );
+
+
+  updateSimulationText();
+
+}
+
+
+function updateSimulationText(){
+
+  const q =
+    Number(
+      quantity.value
+    );
+
+  if(currentLanguage === "ar"){
+
+    if(q === 1){
+
+      simulationExplanation.textContent =
+        "القنوات الصغيرة تجعل مسار الخلط مصغرًا، وتوضح المحاكاة فكرة تقارب منطقتي السائلين داخل المسار.";
+
+    }else if(q === 2){
+
+      simulationExplanation.textContent =
+        "غيّر كمية المادة لرؤية تمثيل بصري مختلف. المبدأ الأساسي لا يتغير: الجهاز يستخدم مسارات خلط صغيرة.";
+
+    }else{
+
+      simulationExplanation.textContent =
+        "حتى مع زيادة التمثيل البصري لكمية المادة، تبقى الفكرة الأساسية هي استخدام مسارات صغيرة للخلط.";
+
+    }
+
+  }else{
+
+    if(q === 1){
+
+      simulationExplanation.textContent =
+        "Tiny channels create a miniaturized mixing path, illustrating the idea of bringing the two fluid regions together inside the pathway.";
+
+    }else if(q === 2){
+
+      simulationExplanation.textContent =
+        "Change the material quantity to see a different visual representation. The core principle remains the use of small mixing paths.";
+
+    }else{
+
+      simulationExplanation.textContent =
+        "Even when the visual material quantity increases, the central idea remains the use of small pathways for mixing.";
+
+    }
+
+  }
+
+}
+
+
+function createParticles(count){
+
+  const container =
+    document.getElementById(
+      "particles"
+    );
+
+  container.innerHTML = "";
+
+
+  for(let i=0;i<count;i++){
+
+    const p =
+      document.createElement(
+        "span"
+      );
+
+    p.className =
+      "simParticle " +
+      (i % 2 === 0
+        ? "blue"
+        : "green");
+
+
+    p.style.left =
+      (-5 + Math.random()*25) + "%";
+
+    p.style.top =
+      (35 + Math.random()*30) + "%";
+
+    p.style.animationDuration =
+      (2.3 + Math.random()*2) + "s";
+
+    p.style.animationDelay =
+      (-Math.random()*3) + "s";
+
+
+    container.appendChild(p);
+
+  }
+
+}
+
+
+channelSize.addEventListener(
+  "input",
+  updateSimulation
+);
+
+quantity.addEventListener(
+  "input",
+  updateSimulation
+);
+
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+
+const observer =
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+          entry.target.classList.add(
+            "visible"
+          );
+
+        }
+
+      });
+
+    },
+    {
+      threshold:.1
+    }
+  );
+
+
+document
+  .querySelectorAll(".reveal")
+  .forEach(el=>{
+    observer.observe(el);
+  });
+
+
+/* =========================================================
+   START
+========================================================= */
+
+showHotspot("a");
+
+updateSimulation();
+
+</script>
+
+</body>
+</html>
